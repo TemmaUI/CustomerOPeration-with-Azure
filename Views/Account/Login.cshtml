@@ -1,0 +1,21 @@
+﻿@model AzureCustomerOPeration.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+<br />
+<br />
+<div class="wrapper"> 
+
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new{ @class= "form-signin"})) {
+        <h2 class="=form-signin-heading">Please login</h2>
+        <input type ="password" class="form-control" name="username" placeholder="Username" required="" action="" autofocus=""/>
+        <input type="password" class="form-control" name="username" placeholder="Username" required="" action="" autofocus="" />
+        <br />
+        <button class="btn btn-lg btn-primary" type="submit">Login</button>
+        <br />
+        @Html.ValidationMessage("LogOnError"); 
+    }
+
+
+</div>

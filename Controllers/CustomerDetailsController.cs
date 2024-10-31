@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AzureCustomerOPeration.Data;
 using AzureCustomerOPeration.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AzureCustomerOPeration.Controllers
 {
-    public class LeadEntitiesController : Controller
+    [Authorize]
+    public class CustomerDetailsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public LeadEntitiesController(ApplicationDbContext context)
+        public CustomerDetailsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -27,7 +29,7 @@ namespace AzureCustomerOPeration.Controllers
                 Problem("Entity set'ApplicationDbContext.Leads' is null.");
         }
 
-        // GET: LeadEntities/Details/5
+        // GET: CustomerDetails/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,13 +47,13 @@ namespace AzureCustomerOPeration.Controllers
             return View(leadEntity);
         }
 
-        // GET: LeadEntities/Create
+        // GET: CustomerDetails/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: LeadEntities/Create
+        // POST: CustomerDetails/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -67,7 +69,7 @@ namespace AzureCustomerOPeration.Controllers
             return View(leadEntity);
         }
 
-        // GET: LeadEntities/Edit/5
+        // GET: CustomerDetails/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,7 +85,7 @@ namespace AzureCustomerOPeration.Controllers
             return View(leadEntity);
         }
 
-        // POST: LeadEntities/Edit/5
+        // POST: CustomerDetails/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -118,7 +120,7 @@ namespace AzureCustomerOPeration.Controllers
             return View(leadEntity);
         }
 
-        // GET: LeadEntities/Delete/5
+        // GET: CustomerDetails/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,7 +138,7 @@ namespace AzureCustomerOPeration.Controllers
             return View(leadEntity);
         }
 
-        // POST: LeadEntities/Delete/5
+        // POST: CustomerDetails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
