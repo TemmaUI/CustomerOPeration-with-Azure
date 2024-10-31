@@ -30,7 +30,16 @@ namespace AzureCustomerOPeration.Controllers
 
         private bool LoginUser(object username, object password)
         {
-           return true;
+            // predefined Credentials
+            string predefinedUsername = "admin";
+            string predefinedPassword = "temmaUI123";
+            if (username == null || password == null)
+            {
+                return false;
+            }
+
+            return string.Equals((string?)username, predefinedUsername, StringComparison.OrdinalIgnoreCase) &&
+             string.Equals((string?)password, predefinedPassword, StringComparison.OrdinalIgnoreCase);
         }
 
 
