@@ -30,15 +30,15 @@ namespace AzureCustomerOPeration.Controllers
         }
 
         // GET: CustomerDetails/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return NotFound();
             }
 
             var leadEntity = await _context.Leads
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == Id);
             if (leadEntity == null)
             {
                 return NotFound();
@@ -58,7 +58,7 @@ namespace AzureCustomerOPeration.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,Name,Phone,Email,Address")] LeadEntity leadEntity)
+        public async Task<IActionResult> Create([Bind("Id,Name,Phone,Email,Address")] LeadEntity leadEntity)
         {
             if (ModelState.IsValid)
             {
@@ -70,14 +70,14 @@ namespace AzureCustomerOPeration.Controllers
         }
 
         // GET: CustomerDetails/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return NotFound();
             }
 
-            var leadEntity = await _context.Leads.FindAsync(id);
+            var leadEntity = await _context.Leads.FindAsync(Id);
             if (leadEntity == null)
             {
                 return NotFound();
@@ -90,9 +90,9 @@ namespace AzureCustomerOPeration.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,Name,Phone,Email,Address")] LeadEntity leadEntity)
+        public async Task<IActionResult> Edit(int Id, [Bind("Id,Name,Phone,Email,Address")] LeadEntity leadEntity)
         {
-            if (id != leadEntity.id)
+            if (Id != leadEntity.Id)
             {
                 return NotFound();
             }
@@ -106,7 +106,7 @@ namespace AzureCustomerOPeration.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LeadEntityExists(leadEntity.id))
+                    if (!LeadEntityExists(leadEntity.Id))
                     {
                         return NotFound();
                     }
@@ -121,15 +121,15 @@ namespace AzureCustomerOPeration.Controllers
         }
 
         // GET: CustomerDetails/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return NotFound();
             }
 
             var leadEntity = await _context.Leads
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == Id);
             if (leadEntity == null)
             {
                 return NotFound();
@@ -141,9 +141,9 @@ namespace AzureCustomerOPeration.Controllers
         // POST: CustomerDetails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int Id)
         {
-            var leadEntity = await _context.Leads.FindAsync(id);
+            var leadEntity = await _context.Leads.FindAsync(Id);
             if (leadEntity != null)
             {
                 _context.Leads.Remove(leadEntity);
@@ -153,9 +153,9 @@ namespace AzureCustomerOPeration.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LeadEntityExists(int id)
+        private bool LeadEntityExists(int Id)
         {
-            return _context.Leads.Any(e => e.id == id);
+            return _context.Leads.Any(e => e.Id == Id);
         }
     }
 }

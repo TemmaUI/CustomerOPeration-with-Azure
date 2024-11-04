@@ -1,11 +1,11 @@
 ﻿@model AzureCustomerOPeration.Models.LoginModel
 
-<h3>Please kindly Login</h3>
+<h5>Welcome Admin kindly Login</h5>
 <hr />
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Login" asp-controller="Account" method="post">
+        <form asp-action="AdminPriviledge" asp-controller="Account" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>

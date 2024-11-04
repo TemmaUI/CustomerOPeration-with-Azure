@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace AzureCustomerOPeration.Controllers
 {
-    public class AccountController : Controller
+    public class AdminRole : Controller
     {
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult AdminPriviledge()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> AdminPriviledge(LoginModel model)
         {
             var result = LoginUser(model.Username, model.Password);
 
@@ -53,8 +53,8 @@ namespace AzureCustomerOPeration.Controllers
 
         private LoginResult LoginUser(object username, object password)
         {
-            string predefinedUsername = "admin";
-            string predefinedPassword = "temmaUI123";
+            string AddpredefinedUsername = "admin";
+            string AddpredefinedPassword = "123456";
 
             if (username == null || password == null)
             {
@@ -64,12 +64,12 @@ namespace AzureCustomerOPeration.Controllers
             string userName = (string?)username;
             string passWord = (string?)password;
 
-            if (!string.Equals(userName, predefinedUsername, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(userName, AddpredefinedUsername, StringComparison.OrdinalIgnoreCase))
             {
                 return LoginResult.WrongUsername;
             }
 
-            if (!string.Equals(passWord, predefinedPassword, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(passWord, AddpredefinedPassword, StringComparison.OrdinalIgnoreCase))
             {
                 return LoginResult.WrongPassword;
             }

@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<AzureCustomerOPeration.Models.LeadEntity>
-
 @{
     ViewData["Title"] = "Index";
 }
@@ -7,8 +6,9 @@
 <h1>Customer Information Platform</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateCustomer" asp-controller="AccountProfile">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -28,26 +28,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    <a asp-action="UpdateCustomer" asp-route-id="@item.Id" asp-controller="AccountProfile">Edit</a> |
+                    <a asp-action="CustomerDetails" asp-route-id="@item.Id" asp-controller="AccountProfile">Details</a> |
+                    <a asp-action="DeleteCustomer" asp-route-id="@item.Id" asp-controller="AccountProfile">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+``)
