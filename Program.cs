@@ -23,9 +23,8 @@ builder.Services.AddAuthentication(options =>
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 {
     options.LoginPath = new PathString("/Account/Login");
-    options.AccessDeniedPath = new PathString("/Account/Unauthorized");
+    options.Cookie.Name = "AzureCustomerOPeration";
 });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,9 +41,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCookiePolicy();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+    pattern: "{controller=Home}/{action=Index}/{Id?}");
 app.Run();

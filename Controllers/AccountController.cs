@@ -4,98 +4,72 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Identity.Client;
 
 namespace AzureCustomerOPeration.Controllers
 {
     public class AccountController : Controller
     {
-        [HttpGet]
-        public IActionResult Login()
+        public List<UserModel> users = null;
+        public AccountController()
         {
-            return View();
+            users = new List<UserModel>();
+            users.Add(new UserModel()
+            {
+                UserId = 1,
+                UserName = "Temmaui",
+                Password = "123",
+                Role = "Admin"
+            });
+            users.Add(new UserModel()
+            {
+                UserId = 2,
+                UserName = "user",
+                Password = "123",
+                Role = "User"
+            });
         }
-
+        public IActionResult Login(string returnUrl="/")
+        {
+            LoginModel loginModel = new LoginModel();   
+            loginModel.ReturnUrl = returnUrl;
+            return View(loginModel);
+        }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel loginModel)
+
         {
-            var result = LoginUser(model.Username, model.Password);
-
-            switch (result)
+            var user = users.Where(u => u.UserName == loginModel.UserName && u.Password == loginModel.Password).FirstOrDefault();
+            if (user != null)
             {
-                case LoginResult.Success:
-                    var claims = new List<Claim> { new Claim(ClaimTypes.Name, model.Username) };
-                    var userIdentity = new ClaimsIdentity(claims, "login");
-                    var userPrincipal = new ClaimsPrincipal(userIdentity);
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.NameIdentifier, Convert.ToString(user.UserId)),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Name, user.Role),
+                    new Claim("AzureCustomerOPeration", "Code"),
 
-                    var loginProperties = new AuthenticationProperties
+                };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                    new AuthenticationProperties()
                     {
-                        IsPersistent = true,
-                        ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
-                    };
-
-                    await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal, loginProperties);
-
-                    return RedirectToAction("Index", "CustomerDetails");
-                case LoginResult.InvalidInput:
-                    ModelState.AddModelError(string.Empty, "Invalid input.");
-                    break;
-                case LoginResult.WrongUsername:
-                    ModelState.AddModelError(string.Empty, "Incorrect entry, please try again.");
-                    break;
-                case LoginResult.WrongPassword:
-                    ModelState.AddModelError(string.Empty, "Incorrect entry, please try again.");
-                    break;
+                        IsPersistent = loginModel.RememberLogin
+                    });
+                return LocalRedirect(loginModel.ReturnUrl);
             }
-
-            return View(model);
-        }
-
-        private LoginResult LoginUser(object username, object password)
-        {
-            string predefinedUsername = "admin";
-            string predefinedPassword = "temmaUI123";
-
-            if (username == null || password == null)
+            else
             {
-                return LoginResult.InvalidInput;
+                ViewBag.Message = "Invalid Credentials";
+                return View(loginModel);
             }
-
-            string userName = (string?)username;
-            string passWord = (string?)password;
-
-            if (!string.Equals(userName, predefinedUsername, StringComparison.OrdinalIgnoreCase))
+        }
+                public async Task<IActionResult> Logout()
             {
-                return LoginResult.WrongUsername;
-            }
-
-            if (!string.Equals(passWord, predefinedPassword, StringComparison.OrdinalIgnoreCase))
-            {
-                return LoginResult.WrongPassword;
-            }
-
-            return LoginResult.Success;
-        }
-
-        public enum LoginResult
-        {
-            Success,
-            InvalidInput,
-            WrongUsername,
-            WrongPassword
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult Unauthorized()
-        {
-            return View();
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return LocalRedirect("/");
         }
     }
 }
+

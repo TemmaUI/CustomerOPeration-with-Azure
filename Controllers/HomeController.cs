@@ -1,4 +1,5 @@
 using AzureCustomerOPeration.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -27,6 +28,21 @@ namespace AzureCustomerOPeration.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        [Authorize]
+        public IActionResult AuthorizedPage()
+        {
+            return View();
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminPage()
+        {
+            return View();
+        }
+        [Authorize(Roles = "User")]
+        public IActionResult UserPage()
+        {
+            return View();
         }
     }
 }
