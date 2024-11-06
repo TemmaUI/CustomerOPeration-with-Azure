@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for azurecustomeroperation on 2024-10-21T00:40:57+01:00
+# fly.toml app configuration file generated for customeroperation-with-azure on 2024-11-06T22:18:43+01:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'azurecustomeroperation'
+app = 'customeroperation-with-azure'
 primary_region = 'ams'
 
 [build]
