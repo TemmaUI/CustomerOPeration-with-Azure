@@ -9,6 +9,7 @@ using Microsoft.Identity.Client;
 namespace AzureCustomerOPeration.Controllers
 {
     public class AccountController : Controller
+
     {
         public List<UserModel> users = null;
         public AccountController()
@@ -57,7 +58,7 @@ namespace AzureCustomerOPeration.Controllers
                     {
                         IsPersistent = loginModel.RememberLogin
                     });
-                return LocalRedirect(loginModel.ReturnUrl);
+                return RedirectToAction("Index", "CustomerDetails");
             }
             else
             {
@@ -68,7 +69,7 @@ namespace AzureCustomerOPeration.Controllers
                 public async Task<IActionResult> Logout()
             {
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return LocalRedirect("/");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

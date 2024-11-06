@@ -1,18 +1,25 @@
 ﻿@model AzureCustomerOPeration.Models.LoginModel
+
 @{
     ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>Login</h1>
-<form asp-action="Login">
-@Html.HiddenFor(x=> x.ReturnUrl)
-
-<input class="form-control" type="text" name="username" placeholder="Username" >
-<input type="text" class="form-control" name="password" placeholder="Password">
 <br />
-<button class="btn btn-success">Sign in</button>
+<br />
+<div class="wrapper">
+
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-signin" }))
+    {
+        <h2 class="=form-signin-heading">Please login</h2>
+        <input type="text" class="form-control" name="username" placeholder="Username" required="" action="" autofocus="" />
+        <br />
+        <input type="password" class="form-control" name="password" placeholder="Password" required="" action="" autofocus="" />
+        <br />
+        <button class="btn btn-lg btn-primary" type="submit">Login</button>
+        <br />
+        @Html.ValidationMessage("LogOnError")
+        ;
+    }
 
 
-</form>
 
+</div>

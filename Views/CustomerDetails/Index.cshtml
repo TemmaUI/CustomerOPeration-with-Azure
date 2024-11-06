@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<AzureCustomerOPeration.Models.LeadEntity>
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -6,9 +7,8 @@
 <h1>Customer Information Platform</h1>
 
 <p>
-    <a asp-action="CreateCustomer" asp-controller="AccountProfile">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
-
 <table class="table">
     <thead>
         <tr>
@@ -44,12 +44,12 @@
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
-                    <a asp-action="UpdateCustomer" asp-route-id="@item.Id" asp-controller="AccountProfile">Edit</a> |
-                    <a asp-action="CustomerDetails" asp-route-id="@item.Id" asp-controller="AccountProfile">Details</a> |
-                    <a asp-action="DeleteCustomer" asp-route-id="@item.Id" asp-controller="AccountProfile">Delete</a>
+                    <a asp-action="Login" asp-route-id="@item.Id" asp-controller="Account">Edit</a>
+ |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-``)
