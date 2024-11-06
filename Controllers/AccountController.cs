@@ -9,9 +9,9 @@ using Microsoft.Identity.Client;
 namespace AzureCustomerOPeration.Controllers
 {
     public class AccountController : Controller
-
     {
         public List<UserModel> users = null;
+
         public AccountController()
         {
             users = new List<UserModel>();
@@ -19,45 +19,70 @@ namespace AzureCustomerOPeration.Controllers
             {
                 UserId = 1,
                 UserName = "Temmaui",
-                Password = "123",
+                Password = "Admin123!",
                 Role = "Admin"
             });
             users.Add(new UserModel()
             {
                 UserId = 2,
-                UserName = "user",
-                Password = "123",
-                Role = "User"
+                UserName = "salesrep",
+                Password = "SalesRep123!",
+                Role = "SalesRep"
             });
         }
-        public IActionResult Login(string returnUrl="/")
+
+        public IActionResult Login(string returnUrl = "/")
         {
-            LoginModel loginModel = new LoginModel();   
+            LoginModel loginModel = new LoginModel();
             loginModel.ReturnUrl = returnUrl;
             return View(loginModel);
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
-
         {
-            var user = users.Where(u => u.UserName == loginModel.UserName && u.Password == loginModel.Password).FirstOrDefault();
-            if (user != null)
+            // Define admin and user passwords
+            const string adminPassword = "Admin123!";
+            const string userPassword = "SalesRep123!";
+
+            // Assign role based on password
+            string role = null;
+            if (loginModel.Password == adminPassword)
+            {
+                role = "Admin";
+            }
+            else if (loginModel.Password == userPassword)
+            {
+                role = "SalesRep";
+            }
+            else
+            {
+                // Handle invalid password
+                ViewBag.Message = "Invalid Credentials";
+                return View(loginModel);
+            }
+
+            // Find user by username
+            var user = users.Where(u => u.UserName == loginModel.UserName).FirstOrDefault();
+
+            if (user != null && user.Role == role)
             {
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, Convert.ToString(user.UserId)),
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Name, user.Role),
+                    new Claim(ClaimTypes.Role, user.Role), // Corrected claim type
                     new Claim("AzureCustomerOPeration", "Code"),
-
                 };
+
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
-                    new AuthenticationProperties()
-                    {
-                        IsPersistent = loginModel.RememberLogin
-                    });
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties()
+                {
+                    IsPersistent = loginModel.RememberLogin
+                });
+
                 return RedirectToAction("Index", "CustomerDetails");
             }
             else
@@ -66,11 +91,11 @@ namespace AzureCustomerOPeration.Controllers
                 return View(loginModel);
             }
         }
-                public async Task<IActionResult> Logout()
-            {
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
     }
 }
-
