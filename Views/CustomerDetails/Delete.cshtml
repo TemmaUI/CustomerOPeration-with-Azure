@@ -35,9 +35,9 @@
             @Html.DisplayFor(model => model.Address)
         </dd>
     </dl>
-    <form asp-action="DeleteCustomerConfirmed" asp-controller="AccountProfile">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+    <form asp-action="Delete" asp-controller="CustomerDetails">
+        <input type="hidden" asp-for="Name" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
     </form>
 </div>
 <div>

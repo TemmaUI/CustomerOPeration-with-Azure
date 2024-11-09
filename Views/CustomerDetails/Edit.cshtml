@@ -32,18 +32,18 @@
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            <form asp-action="UpdateCustomer" asp-controller="CustomerDetails">
+                <input type="hidden" asp-for="Name" />
+                <input type="submit" value="Save" class="btn btn-danger" />
+            </form>
         </form>
     </div>
 </div>
-    <div>
+<div>
         <a asp-action="Index">Back to List</a>
-    </div>
-
-    @section Scripts {
+ </div>
+ @section Scripts {
         @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");
         }
-    }
+}

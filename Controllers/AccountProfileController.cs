@@ -140,10 +140,11 @@ namespace AzureCustomerOPeration.Controllers
 
         // POST: CustomerDetails/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int Id)
+       [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string Name)
         {
-            var leadEntity = await _context.Leads.FindAsync(Id);
+            var leadEntity = await _context.Leads.FindAsync(Name
+                );
             if (leadEntity != null)
             {
                 _context.Leads.Remove(leadEntity);
