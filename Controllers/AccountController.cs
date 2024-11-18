@@ -97,5 +97,45 @@ namespace AzureCustomerOPeration.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
+        public IActionResult Register() 
+        { 
+            return View(); 
+        } 
+        [HttpPost] 
+        public async Task<IActionResult> Register(RegisterViewModel model) 
+        { if (ModelState.IsValid) 
+            { // Check if the user already exists
+              var existingUser = users.FirstOrDefault(u => u.UserName == model.Email); 
+                if (existingUser != null) 
+                { ModelState.AddModelError(string.Empty, "User already exists."); 
+                    return View(model); 
+                }
+                // Create new user
+                var newUser = new UserModel
+              {   UserId = users.Count + 1, // Simple user ID assignment
+                 UserName = model.Email, 
+                 Password = model.Password, // Note: Password should be hashed in a real application
+                 Role = model.Role ?? "User" // Default role if none specified
+              };
+                 users.Add(newUser); 
+                // Redirect to login or directly log in the user
+                var claims = new List<Claim>() 
+                {
+                    new Claim(ClaimTypes.NameIdentifier, Convert.ToString(newUser.UserId)), 
+                    new Claim(ClaimTypes.Name, newUser.UserName), 
+                    new Claim(ClaimTypes.Role, newUser.Role), 
+                    new Claim("AzureCustomerOPeration", "Code"), 
+                }; 
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme); 
+                var principal = new ClaimsPrincipal(identity); 
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties() 
+                {
+                    IsPersistent = true // Change based on your preference
+                 }); 
+                return RedirectToAction("Index", "CustomerDetails"); 
+            }
+            return View(model); 
+        }
     }
 }

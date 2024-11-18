@@ -1,6 +1,7 @@
 using AzureCustomerOPeration.Attributes;
 using AzureCustomerOPeration.Data;
 using AzureCustomerOPeration.Models;
+using AzureCustomerOPeration.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +34,9 @@ builder.Services.AddAuthentication(options =>
     options.LoginPath = new PathString("/Account/Login");
     options.Cookie.Name = "AzureCustomerOPeration";
 });
+
+// Add EmailService
+builder.Services.AddTransient<EmailService>();
 
 var app = builder.Build();
 
